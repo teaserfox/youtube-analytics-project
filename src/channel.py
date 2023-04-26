@@ -1,5 +1,6 @@
 import os
 import json
+
 from googleapiclient.discovery import build
 
 
@@ -26,11 +27,16 @@ class Channel:
         channel = self.youtube.channels().list(id=self.__channel_id, part="snippet,statistics").execute()
         print(json.dumps(channel, indent=2, ensure_ascii=False))
 
+
     @property
     def channel_id(self) -> str:
         """Геттер возвращает id канала."""
         return self.__channel_id
 
+    @channel_id.setter
+    def channel_id(self, id):
+        """Сеттер возвращает id канала."""
+        print("AttributeError: property 'channel_id' of 'Channel' object has no setter")
 
     @property
     def title(self) -> str:
