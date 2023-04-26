@@ -27,14 +27,13 @@ class Channel:
         channel = self.youtube.channels().list(id=self.__channel_id, part="snippet,statistics").execute()
         print(json.dumps(channel, indent=2, ensure_ascii=False))
 
-
     @property
     def channel_id(self) -> str:
         """Геттер возвращает id канала."""
         return self.__channel_id
 
     @channel_id.setter
-    def channel_id(self, id):
+    def channel_id(self, value):
         """Сеттер возвращает id канала."""
         print("AttributeError: property 'channel_id' of 'Channel' object has no setter")
 
@@ -85,4 +84,4 @@ class Channel:
             'views_count': self.__views_count
         }
         with open(filename, 'w') as file:
-            json.dump(data, file, indent=4)
+            json.dump(data, file, indent=4, ensure_ascii=False)
