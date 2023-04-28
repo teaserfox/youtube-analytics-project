@@ -85,3 +85,51 @@ class Channel:
         }
         with open(filename, 'w') as file:
             json.dump(data, file, indent=4, ensure_ascii=False)
+
+    def __str__(self) -> str:
+        """
+        Отображаем информацию об объектах класса(название канала, ссылка) для пользователей.
+        """
+        return f'{self.__title} ({self.__url})'
+
+    def __add__(self, other: 'Channel') -> int:
+        """
+        Метод сложения.
+        """
+        return self.__subscribers_count + other.__subscribers_count
+
+    def __sub__(self, other: 'Channel') -> int:
+        """
+        Метод вычитания.
+        """
+        return self.__subscribers_count - other.__subscribers_count
+
+    def __gt__(self, other: 'Channel') -> bool:
+        """
+        Метод сравнения больше.
+        """
+        return self.__subscribers_count > other.__subscribers_count
+
+    def __ge__(self, other: 'Channel') -> bool:
+        """
+        Метод сравнения больше или равно.
+        """
+        return self.__subscribers_count >= other.__subscribers_count
+
+    def __lt__(self, other: 'Channel') -> bool:
+        """
+        Метод сравнения меньше.
+        """
+        return self.__subscribers_count < other.__subscribers_count
+
+    def __le__(self, other: 'Channel') -> bool:
+        """
+        Метод сравнения меньше или равно.
+        """
+        return self.__subscribers_count >= other.__subscribers_count
+
+    def __eq__(self, other: 'Channel') -> bool:
+        """
+        Метод сравнения равно.
+        """
+        return self.__subscribers_count == other.__subscribers_count
