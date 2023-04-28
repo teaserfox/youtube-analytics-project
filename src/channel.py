@@ -32,10 +32,10 @@ class Channel:
         """Геттер возвращает id канала."""
         return self.__channel_id
 
-    @channel_id.setter
-    def channel_id(self, value):
-        """Сеттер возвращает id канала."""
-        print("AttributeError: property 'channel_id' of 'Channel' object has no setter")
+    # # @channel_id.setter
+    #  #def channel_id(self, value):
+    #      """Сеттер возвращает id канала."""
+    #      print("AttributeError: property 'channel_id' of 'Channel' object has no setter")
 
     @property
     def title(self) -> str:
