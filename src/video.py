@@ -11,7 +11,8 @@ class Video:
 
     def __init__(self, id_video: str) -> None:
         """
-        Экземпляр инициализируется id канала video.id видео
+        Экземпляр инициализируется id канала video.
+        :id видео
         :название видео
         :ссылка на видео
         :количество просмотров
@@ -70,4 +71,7 @@ class PLVideo(Video):
 
     @property
     def playlist_id(self):
+        """
+        Возвращает айди плейлиста.
+        """
         return self.__playlist_id
