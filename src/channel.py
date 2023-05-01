@@ -12,7 +12,7 @@ class Channel:
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
-        self.youtube = build('youtube', 'v3', developerKey=self.__api_key)
+        # self.youtube = build('youtube', 'v3', developerKey=self.__api_key)
         self.__channel = self.__youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.__title = self.__channel['items'][0]['snippet']['title']
         self.__description = self.__channel['items'][0]['snippet']['description']
@@ -133,3 +133,5 @@ class Channel:
         Метод сравнения равно.
         """
         return self.__subscribers_count == other.__subscribers_count
+
+
