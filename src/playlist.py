@@ -22,20 +22,19 @@ class PlayList:
         self.__video = self.youtube.videos().list(part='contentDetails,statistics',
                                                   id=','.join(self.__playlist_id)).execute()
         self.__playlist_videos = self.youtube.playlists().list(part='snippet',
-                                                             id=self.__playlist_id, ).execute()
+                                                               id=self.__playlist_id, ).execute()
         self.title = self.__playlist_videos['items'][0]['snippet']['title']
-        self.url = f'https://www.youtube.com/watch?v={self.__playlist_id}'
+        self.url = f'https://www.youtube.com/playlist?list={self.__playlist_id}'
 
     @property
     def total_duration(self):
-        res = timedelta()
-
+        total = timedelta(seconds=0)
         for video in self.__video['items']:
-            # YouTube video duration is in ISO 8601 format
             iso_8601_duration = video['contentDetails']['duration']
             duration = isodate.parse_duration(iso_8601_duration)
-            res += duration
-        return res
+            total += duration
+
+        return total
 
     def show_best_video(self):
         likes = 0
