@@ -15,22 +15,16 @@ class PlayList:
         :ссылка на плейлист
         """
         self.__playlist_id = playlist_id
-        self.__playlist_videos = self.youtube.playlistItems().list(playlistId=playlist_id,
-                                                       part='contentDetails',
-                                                       maxResults=50,
-                                                       ).execute()
+        self.__playlist_videos = self.youtube.playlistItems().list(playlistId=playlist_id, part='contentDetails',
+                                                                   maxResults=50, ).execute()
         self.__duration = self.youtube.videos().list(part='contentDetails,statistics',
-                                                     id=','.join(self.__playlist_id)
-                                                     ).execute()
+                                                     id=','.join(self.__playlist_id)).execute()
         self.__video = self.youtube.videos().list(part='contentDetails,statistics',
-                                                         id=','.join(self.__playlist_id)
-                                                         ).execute()
-        playlist_videos = self.youtube.playlists().list(part='snippet',
-                                                        id=self.__playlist_id,
-                                                        ).execute()
-        self.title = self.__playlist_videos['items'][0]['snippet']['localized']['title']
+                                                  id=','.join(self.__playlist_id)).execute()
+        self.__playlist_videos = self.youtube.playlists().list(part='snippet',
+                                                             id=self.__playlist_id, ).execute()
+        self.title = self.__playlist_videos['items'][0]['snippet']['title']
         self.url = f'https://www.youtube.com/watch?v={self.__playlist_id}'
-
 
     @property
     def total_duration(self):
@@ -60,5 +54,3 @@ class PlayList:
                 best_video = f"https://youtu.be/{video_request['items'][0]['id']}"
 
         return best_video
-
-
