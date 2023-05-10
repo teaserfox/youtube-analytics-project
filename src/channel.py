@@ -1,19 +1,21 @@
 import os
 import json
+from src.mixin_id import Mixin_id
 
 from googleapiclient.discovery import build
 
 
-class Channel:
+class Channel(Mixin_id):
     """Класс для ютуб-канала"""
-    __api_key: str = os.getenv('YT_API_KEY')
-    __youtube = build('youtube', 'v3', developerKey=__api_key)
+    # __api_key: str = os.getenv('YT_API_KEY')
+    # __youtube = build('youtube', 'v3', developerKey=__api_key)
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
+        super().__init__()
         self.__channel_id = channel_id
         # self.youtube = build('youtube', 'v3', developerKey=self.__api_key)
-        self.__channel = self.__youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
+        self.__channel = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.__title = self.__channel['items'][0]['snippet']['title']
         self.__description = self.__channel['items'][0]['snippet']['description']
         self.__url = f'https://www.youtube.com/channel/{self.__channel_id}'
@@ -67,10 +69,10 @@ class Channel:
         """Геттер возвращает количество просмотров канала."""
         return self.__views_count
 
-    @classmethod
-    def get_service(cls):
-        """Класс-метод возвращает объект для работы с YouTube API."""
-        return cls.__youtube
+    # @classmethod
+    # def get_service(cls):
+    #     """Класс-метод возвращает объект для работы с YouTube API."""
+    #     return cls.__youtube
 
     def to_json(self, filename) -> None:
         """Метод возвращает в json значения атрибутов экземпляра Channel."""

@@ -2,14 +2,16 @@ import os
 import isodate
 from datetime import timedelta
 from googleapiclient.discovery import build
+from src.mixin_id import Mixin_id
 
 
-class PlayList:
+class PlayList(Mixin_id):
 
-    api_key: str = os.getenv('YT_API_KEY')
-    youtube = build('youtube', 'v3', developerKey=api_key)
+    # api_key: str = os.getenv('YT_API_KEY')
+    # youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, playlist_id: str) -> None:
+        super().__init__()
         self.__playlist_id = playlist_id
         self.__playlist_videos = self.youtube.playlistItems().list(playlistId=playlist_id, part='contentDetails',
                                                                    maxResults=50, ).execute()

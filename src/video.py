@@ -1,13 +1,14 @@
 import os
 from googleapiclient.discovery import build
+from src.mixin_id import Mixin_id
 
 
-class Video:
+class Video(Mixin_id):
     """
     Родительский класс видео.
     """
-    api_key: str = os.getenv('YT_API_KEY')
-    youtube = build('youtube', 'v3', developerKey=api_key)
+    # api_key: str = os.getenv('YT_API_KEY')
+    # youtube = build('youtube', 'v3', developerKey=api_key)
 
     def __init__(self, id_video: str) -> None:
         """
@@ -18,6 +19,7 @@ class Video:
         :количество просмотров
         :количество лайков
         """
+        super().__init__()
         self.__id_video = id_video
         self.__video = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                   id=self.__id_video).execute()
@@ -58,15 +60,15 @@ class Video:
         return self.__title
 
 
-class PLVideo(Video):
+class PLVideo(Video, Mixin_id):
     """
     Дочерний класс от video.
     + свой параметр playlist.
     """
 
     def __init__(self, id_video, playlist_id) -> None:
-        super().__init__(
-            id_video)  # возвращает ссылку на объект-посредник, через который происходит вызов методов базового класса
+        super().__init__(id_video)  # возвращает ссылку на объект-посредник,
+        # через который происходит вызов методов базового класса
         self.__playlist_id = playlist_id
 
     @property
