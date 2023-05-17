@@ -1,12 +1,15 @@
-import os
-from googleapiclient.discovery import build
 from src.mixin_id import Mixin_id
+
+
+class HttpError(Exception):
+    pass
 
 
 class Video(Mixin_id):
     """
     Родительский класс видео.
     """
+
     # api_key: str = os.getenv('YT_API_KEY')
     # youtube = build('youtube', 'v3', developerKey=api_key)
 
@@ -20,13 +23,32 @@ class Video(Mixin_id):
         :количество лайков
         """
         super().__init__()
-        self.__id_video = id_video
+        try:
+            self.__id_video = id_video
+            self.__video = self.get_info()
+            self.__title = self.__video['items'][0]['snippet']['title']
+            self.__url = f'https://www.youtube.com/watch?v={self.__id_video}'
+            self.__view_count = self.__video['items'][0]['statistics']['viewCount']
+            self.__like_count = self.__video['items'][0]['statistics']['likeCount']
+        except HttpError:
+            self.__id_video = None
+            self.__video = None
+            self.__title = None
+            self.__url = None
+            self.__view_count = None
+            self.__like_count = None
+            print('Неверное ID видеоролика')
+
+    def get_info(self):
+        """
+        Выводит в консоль информацию о канале.
+        """
         self.__video = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                   id=self.__id_video).execute()
-        self.__title = self.__video['items'][0]['snippet']['title']
-        self.__url = f'https://www.youtube.com/watch?v={self.__id_video}'
-        self.__view_count = self.__video['items'][0]['statistics']['viewCount']
-        self.__like_count = self.__video['items'][0]['statistics']['likeCount']
+        if len(self.__video['items']) == 0:
+            raise HttpError
+        else:
+            return self.__video
 
     @property
     def title(self) -> str:

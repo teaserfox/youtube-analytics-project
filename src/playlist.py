@@ -13,7 +13,7 @@ class PlayList(Mixin_id):
     def __init__(self, playlist_id: str) -> None:
         super().__init__()
         self.__playlist_id = playlist_id
-        self.__playlist_videos = self.youtube.playlistItems().list(playlistId=playlist_id, part='contentDetails',
+        self.__playlist_videos = self.youtube.playlistItems().list(playlistId=self.__playlist_id, part='contentDetails',
                                                                    maxResults=50, ).execute()
         self.__video_ids = [video['contentDetails']['videoId'] for video in self.__playlist_videos['items']]
 
