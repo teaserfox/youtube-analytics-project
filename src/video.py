@@ -1,8 +1,5 @@
 from src.mixin_id import Mixin_id
-
-
-class HttpError(Exception):
-    pass
+from googleapiclient.errors import HttpError
 
 
 class Video(Mixin_id):
@@ -23,15 +20,18 @@ class Video(Mixin_id):
         :количество лайков
         """
         super().__init__()
+
         try:
             self.__id_video = id_video
-            self.__video = self.get_info()
+            self.get_info()
             self.__title = self.__video['items'][0]['snippet']['title']
             self.__url = f'https://www.youtube.com/watch?v={self.__id_video}'
             self.__view_count = self.__video['items'][0]['statistics']['viewCount']
             self.__like_count = self.__video['items'][0]['statistics']['likeCount']
-        except HttpError:
-            self.__id_video = None
+        except (HttpError, IndexError):
+            #  ? можно ли прописать код так, что бы все аргументы из try в except возвращались
+            # одной командой return None
+            self.__id_video = id_video
             self.__video = None
             self.__title = None
             self.__url = None
@@ -45,10 +45,10 @@ class Video(Mixin_id):
         """
         self.__video = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                   id=self.__id_video).execute()
-        if len(self.__video['items']) == 0:
-            raise HttpError
-        else:
-            return self.__video
+        # if len(self.__video['items']) == 0:
+        #     raise HttpError
+        # else:
+        #     return self.__video
 
     @property
     def title(self) -> str:
